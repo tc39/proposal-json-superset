@@ -8,6 +8,7 @@ stage: 0
 shortname: ecma262-proposal-json-superset
 contributors: Richard Gibson
 </pre>
+<emu-biblio href="./missing-productions.json"></emu-biblio>
 
 
 <!-- es6num="11.8.4" -->

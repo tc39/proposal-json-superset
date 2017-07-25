@@ -1,0 +1,9 @@
+{
+  "https://tc39.github.io/ecma262/": [
+    {
+      "type": "production",
+      "id": "prod-annexB-LegacyOctalEscapeSequence",
+      "name": "LegacyOctalEscapeSequence"
+    }
+  ]
+}

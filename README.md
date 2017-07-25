@@ -1,12 +1,12 @@
 # Subsume JSON
 
-Proposal to extend ECMA-262 syntax into a superset of JSON.
+A proposal to extend ECMA-262 syntax into a superset of JSON.
 
 ## Status
 This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process-document/).
 
 ## Champions
-None yet, but Mark Miller expressed interest.
+There are no current champions, but Mark Miller has expressed interest.
 
 ## Motivation
 ECMAScript claims JSON as a subset in [`JSON.parse`](https://tc39.github.io/ecma262/#sec-json.parse), but (as has been well-documented) that is not true because JSON strings can contain unescaped U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR characters while ECMAScript strings cannot.

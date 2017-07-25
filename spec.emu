@@ -1,0 +1,399 @@
+<!doctype html>
+<meta charset="utf8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<pre class="metadata">
+title: Subsume JSON
+status: proposal
+stage: 0
+shortname: ecma262-proposal-json-superset
+contributors: Richard Gibson
+</pre>
+
+
+<!-- es6num="11.8.4" -->
+<emu-clause id="sec-literals-string-literals">
+  <h1>String Literals</h1>
+  <emu-note>
+    <p>A string literal is zero or more Unicode code points enclosed in single or double quotes. Unicode code points may also be represented by an escape sequence. All code points may appear literally in a string literal except for the closing quote code points, U+005C (REVERSE SOLIDUS), U+000D (CARRIAGE RETURN), U+2028 (LINE SEPARATOR), U+2029 (PARAGRAPH SEPARATOR), and U+000A (LINE FEED). Any code points may appear in the form of an escape sequence. String literals evaluate to ECMAScript String values. When generating these String values Unicode code points are UTF-16 encoded as defined in <emu-xref href="#sec-utf16encoding"></emu-xref>. Code points belonging to the Basic Multilingual Plane are encoded as a single code unit element of the string. All other code points are encoded as two code unit elements of the string.</p>
+  </emu-note>
+  <h2>Syntax</h2>
+  <emu-grammar>
+    StringLiteral ::
+      `"` DoubleStringCharacters? `"`
+      `'` SingleStringCharacters? `'`
+
+    DoubleStringCharacters ::
+      DoubleStringCharacter DoubleStringCharacters?
+
+    SingleStringCharacters ::
+      SingleStringCharacter SingleStringCharacters?
+
+    DoubleStringCharacter ::
+      SourceCharacter but not one of `"` or `\` or LineTerminator
+      <ins>&lt;LS&gt;</ins>
+      <ins>&lt;PS&gt;</ins>
+      `\` EscapeSequence
+      LineContinuation
+
+    SingleStringCharacter ::
+      SourceCharacter but not one of `'` or `\` or LineTerminator
+      <ins>&lt;LS&gt;</ins>
+      <ins>&lt;PS&gt;</ins>
+      `\` EscapeSequence
+      LineContinuation
+
+    LineContinuation ::
+      `\` LineTerminatorSequence
+
+    EscapeSequence ::
+      CharacterEscapeSequence
+      `0` [lookahead &lt;! DecimalDigit]
+      HexEscapeSequence
+      UnicodeEscapeSequence
+  </emu-grammar>
+  <p>A conforming implementation, when processing strict mode code, must not extend the syntax of |EscapeSequence| to include <emu-xref href="#prod-annexB-LegacyOctalEscapeSequence"></emu-xref> as described in <emu-xref href="#sec-additional-syntax-string-literals"></emu-xref>.</p>
+  <emu-grammar>
+    CharacterEscapeSequence ::
+      SingleEscapeCharacter
+      NonEscapeCharacter
+
+    SingleEscapeCharacter :: one of
+      `'` `"` `\` `b` `f` `n` `r` `t` `v`
+
+    NonEscapeCharacter ::
+      SourceCharacter but not one of EscapeCharacter or LineTerminator
+
+    EscapeCharacter ::
+      SingleEscapeCharacter
+      DecimalDigit
+      `x`
+      `u`
+
+    HexEscapeSequence ::
+      `x` HexDigit HexDigit
+
+    UnicodeEscapeSequence ::
+      `u` Hex4Digits
+      `u{` HexDigits `}`
+
+    Hex4Digits ::
+      HexDigit HexDigit HexDigit HexDigit
+  </emu-grammar>
+  <p>The definition of the nonterminal |HexDigit| is given in <emu-xref href="#sec-literals-numeric-literals"></emu-xref>. |SourceCharacter| is defined in <emu-xref href="#sec-source-text"></emu-xref>.</p>
+  <emu-note>
+    <p><del>A line terminator code point</del><ins>&lt;LF&gt; and &lt;CR&gt;</ins> cannot appear in a string literal, except as part of a |LineContinuation| to produce the empty code points sequence. The proper way to <del>cause a line terminator code point to be part of</del><ins>include either in</ins> the String value of a string literal is to use an escape sequence such as `\\n` or `\\u000A`.</p>
+  </emu-note>
+
+  <!-- es6num="11.8.4.1" -->
+  <emu-clause id="sec-string-literals-static-semantics-early-errors">
+    <h1>Static Semantics: Early Errors</h1>
+    <emu-grammar>UnicodeEscapeSequence :: `u{` HexDigits `}`</emu-grammar>
+    <ul>
+      <li>
+        It is a Syntax Error if the MV of |HexDigits| &gt; 0x10FFFF.
+      </li>
+    </ul>
+  </emu-clause>
+
+  <!-- es6num="11.8.4.2" -->
+  <emu-clause id="sec-string-literals-static-semantics-stringvalue">
+    <h1>Static Semantics: StringValue</h1>
+    <emu-see-also-para op="StringValue"></emu-see-also-para>
+    <emu-grammar>
+      StringLiteral ::
+        `"` DoubleStringCharacters? `"`
+        `'` SingleStringCharacters? `'`
+    </emu-grammar>
+    <emu-alg>
+      1. Return the String value whose elements are the SV of this |StringLiteral|.
+    </emu-alg>
+  </emu-clause>
+
+  <!-- es6num="11.8.4.3" -->
+  <emu-clause id="sec-static-semantics-sv">
+    <h1>Static Semantics: SV</h1>
+    <p>A string literal stands for a value of the String type. The String value (SV) of the literal is described in terms of code unit values contributed by the various parts of the string literal. As part of this process, some Unicode code points within the string literal are interpreted as having a mathematical value (MV), as described below or in <emu-xref href="#sec-literals-numeric-literals"></emu-xref>.</p>
+    <ul>
+      <li>
+        The SV of <emu-grammar>StringLiteral :: `"` `"`</emu-grammar> is the empty code unit sequence.
+      </li>
+      <li>
+        The SV of <emu-grammar>StringLiteral :: `'` `'`</emu-grammar> is the empty code unit sequence.
+      </li>
+      <li>
+        The SV of <emu-grammar>StringLiteral :: `"` DoubleStringCharacters `"`</emu-grammar> is the SV of |DoubleStringCharacters|.
+      </li>
+      <li>
+        The SV of <emu-grammar>StringLiteral :: `'` SingleStringCharacters `'`</emu-grammar> is the SV of |SingleStringCharacters|.
+      </li>
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacters :: DoubleStringCharacter</emu-grammar> is a sequence of one or two code units that is the SV of |DoubleStringCharacter|.
+      </li>
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacters :: DoubleStringCharacter DoubleStringCharacters</emu-grammar> is a sequence of one or two code units that is the SV of |DoubleStringCharacter| followed by all the code units in the SV of |DoubleStringCharacters| in order.
+      </li>
+      <li>
+        The SV of <emu-grammar>SingleStringCharacters :: SingleStringCharacter</emu-grammar> is a sequence of one or two code units that is the SV of |SingleStringCharacter|.
+      </li>
+      <li>
+        The SV of <emu-grammar>SingleStringCharacters :: SingleStringCharacter SingleStringCharacters</emu-grammar> is a sequence of one or two code units that is the SV of |SingleStringCharacter| followed by all the code units in the SV of |SingleStringCharacters| in order.
+      </li>
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacter :: SourceCharacter but not one of `"` or `\` or LineTerminator</emu-grammar> is the UTF16Encoding of the code point value of |SourceCharacter|.
+      </li>
+      <ins class="block">
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacter :: &lt;LS&gt;</emu-grammar> is the code unit value 0x2028.
+      </li>
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacter :: &lt;PS&gt;</emu-grammar> is the code unit value 0x2029.
+      </li>
+      </ins>
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacter :: `\` EscapeSequence</emu-grammar> is the SV of the |EscapeSequence|.
+      </li>
+      <li>
+        The SV of <emu-grammar>DoubleStringCharacter :: LineContinuation</emu-grammar> is the empty code unit sequence.
+      </li>
+      <li>
+        The SV of <emu-grammar>SingleStringCharacter :: SourceCharacter but not one of `'` or `\` or LineTerminator</emu-grammar> is the UTF16Encoding of the code point value of |SourceCharacter|.
+      </li>
+      <ins class="block">
+      <li>
+        The SV of <emu-grammar>SingleStringCharacter :: &lt;LS&gt;</emu-grammar> is the code unit value 0x2028.
+      </li>
+      <li>
+        The SV of <emu-grammar>SingleStringCharacter :: &lt;PS&gt;</emu-grammar> is the code unit value 0x2029.
+      </li>
+      </ins>
+      <li>
+        The SV of <emu-grammar>SingleStringCharacter :: `\` EscapeSequence</emu-grammar> is the SV of the |EscapeSequence|.
+      </li>
+      <li>
+        The SV of <emu-grammar>SingleStringCharacter :: LineContinuation</emu-grammar> is the empty code unit sequence.
+      </li>
+      <li>
+        The SV of <emu-grammar>EscapeSequence :: CharacterEscapeSequence</emu-grammar> is the SV of the |CharacterEscapeSequence|.
+      </li>
+      <li>
+        The SV of <emu-grammar>EscapeSequence :: `0`</emu-grammar> is the code unit value 0.
+      </li>
+      <li>
+        The SV of <emu-grammar>EscapeSequence :: HexEscapeSequence</emu-grammar> is the SV of the |HexEscapeSequence|.
+      </li>
+      <li>
+        The SV of <emu-grammar>EscapeSequence :: UnicodeEscapeSequence</emu-grammar> is the SV of the |UnicodeEscapeSequence|.
+      </li>
+      <li>
+        The SV of <emu-grammar>CharacterEscapeSequence :: SingleEscapeCharacter</emu-grammar> is the code unit whose value is determined by the |SingleEscapeCharacter| according to <emu-xref href="#table-34"></emu-xref>.
+      </li>
+    </ul>
+    <emu-table id="table-34" caption="String Single Character Escape Sequences">
+      <table>
+        <tbody>
+        <tr>
+          <th>
+            Escape Sequence
+          </th>
+          <th>
+            Code Unit Value
+          </th>
+          <th>
+            Unicode Character Name
+          </th>
+          <th>
+            Symbol
+          </th>
+        </tr>
+        <tr>
+          <td>
+            `\\b`
+          </td>
+          <td>
+            `0x0008`
+          </td>
+          <td>
+            BACKSPACE
+          </td>
+          <td>
+            &lt;BS&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\t`
+          </td>
+          <td>
+            `0x0009`
+          </td>
+          <td>
+            CHARACTER TABULATION
+          </td>
+          <td>
+            &lt;HT&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\n`
+          </td>
+          <td>
+            `0x000A`
+          </td>
+          <td>
+            LINE FEED (LF)
+          </td>
+          <td>
+            &lt;LF&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\v`
+          </td>
+          <td>
+            `0x000B`
+          </td>
+          <td>
+            LINE TABULATION
+          </td>
+          <td>
+            &lt;VT&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\f`
+          </td>
+          <td>
+            `0x000C`
+          </td>
+          <td>
+            FORM FEED (FF)
+          </td>
+          <td>
+            &lt;FF&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\r`
+          </td>
+          <td>
+            `0x000D`
+          </td>
+          <td>
+            CARRIAGE RETURN (CR)
+          </td>
+          <td>
+            &lt;CR&gt;
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\"`
+          </td>
+          <td>
+            `0x0022`
+          </td>
+          <td>
+            QUOTATION MARK
+          </td>
+          <td>
+            `"`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\'`
+          </td>
+          <td>
+            `0x0027`
+          </td>
+          <td>
+            APOSTROPHE
+          </td>
+          <td>
+            `'`
+          </td>
+        </tr>
+        <tr>
+          <td>
+            `\\\\`
+          </td>
+          <td>
+            `0x005C`
+          </td>
+          <td>
+            REVERSE SOLIDUS
+          </td>
+          <td>
+            `\\`
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </emu-table>
+    <ul>
+      <li>
+        The SV of <emu-grammar>CharacterEscapeSequence :: NonEscapeCharacter</emu-grammar> is the SV of the |NonEscapeCharacter|.
+      </li>
+      <li>
+        The SV of <emu-grammar>NonEscapeCharacter :: SourceCharacter but not one of EscapeCharacter or LineTerminator</emu-grammar> is the UTF16Encoding of the code point value of |SourceCharacter|.
+      </li>
+      <li>
+        The SV of <emu-grammar>HexEscapeSequence :: `x` HexDigit HexDigit</emu-grammar> is the code unit value that is (16 times the MV of the first |HexDigit|) plus the MV of the second |HexDigit|.
+      </li>
+      <li>
+        The SV of <emu-grammar>UnicodeEscapeSequence :: `u` Hex4Digits</emu-grammar> is the SV of |Hex4Digits|.
+      </li>
+      <li>
+        The SV of <emu-grammar>Hex4Digits :: HexDigit HexDigit HexDigit HexDigit</emu-grammar> is the code unit value that is (0x1000 times the MV of the first |HexDigit|) plus (0x100 times the MV of the second |HexDigit|) plus (0x10 times the MV of the third |HexDigit|) plus the MV of the fourth |HexDigit|.
+      </li>
+      <li>
+        The SV of <emu-grammar>UnicodeEscapeSequence :: `u{` HexDigits `}`</emu-grammar> is the UTF16Encoding of the MV of |HexDigits|.
+      </li>
+    </ul>
+  </emu-clause>
+</emu-clause>
+
+
+<!-- es6num="24.3.1" -->
+<emu-clause id="sec-json.parse">
+  <h1>JSON.parse ( _text_ [ , _reviver_ ] )</h1>
+  <p>The `parse` function parses a JSON text (a JSON-formatted String) and produces an ECMAScript value. The JSON format represents literals, arrays, and objects with a syntax similar to the syntax for ECMAScript literals, Array Initializers, and Object Initializers. After parsing, JSON objects are realized as ECMAScript objects. JSON arrays are realized as ECMAScript Array instances. JSON strings, numbers, booleans, and null are realized as ECMAScript Strings, Numbers, Booleans, and *null*.</p>
+  <p>The optional _reviver_ parameter is a function that takes two parameters, _key_ and _value_. It can filter and transform the results. It is called with each of the _key_/_value_ pairs produced by the parse, and its return value is used instead of the original value. If it returns what it received, the structure is not modified. If it returns *undefined* then the property is deleted from the result.</p>
+  <emu-alg>
+    1. Let _JText_ be ? ToString(_text_).
+    1. Parse _JText_ interpreted as UTF-16 encoded Unicode points (<emu-xref href="#sec-ecmascript-language-types-string-type"></emu-xref>) as a JSON text as specified in ECMA-404. Throw a *SyntaxError* exception if _JText_ is not a valid JSON text as defined in that specification.
+    1. Let _scriptText_ be the result of concatenating `"("`, _JText_, and `");"`.
+    1. Let _completion_ be the result of parsing and evaluating _scriptText_ as if it was the source text of an ECMAScript |Script|<del>, but using the alternative definition of |DoubleStringCharacter| provided below</del>. The extended PropertyDefinitionEvaluation semantics defined in <emu-xref href="#sec-__proto__-property-names-in-object-initializers"></emu-xref> must not be used during the evaluation.
+    1. Let _unfiltered_ be _completion_.[[Value]].
+    1. Assert: _unfiltered_ is either a String, Number, Boolean, Null, or an Object that is defined by either an |ArrayLiteral| or an |ObjectLiteral|.
+    1. If IsCallable(_reviver_) is *true*, then
+      1. Let _root_ be ObjectCreate(%ObjectPrototype%).
+      1. Let _rootName_ be the empty String.
+      1. Let _status_ be CreateDataProperty(_root_, _rootName_, _unfiltered_).
+      1. Assert: _status_ is *true*.
+      1. Return ? InternalizeJSONProperty(_root_, _rootName_).
+    1. Else,
+      1. Return _unfiltered_.
+  </emu-alg>
+  <p>The `length` property of the `parse` function is 2.</p>
+  <del class="block">
+  <p>JSON allows Unicode code units 0x2028 (LINE SEPARATOR) and 0x2029 (PARAGRAPH SEPARATOR) to directly appear in String literals without using an escape sequence. This is enabled by using the following alternative definition of |DoubleStringCharacter| when parsing _scriptText_ in step 4:</p>
+  <emu-grammar>
+    DoubleStringCharacter ::
+      SourceCharacter but not one of `"` or `\` or U+0000 through U+001F
+      `\` EscapeSequence
+  </emu-grammar>
+  <ul>
+    <li>
+      The SV of <emu-grammar>DoubleStringCharacter :: SourceCharacter but not one of `"` or `\` or U+0000 through U+001F</emu-grammar> is the UTF16Encoding of the code point value of |SourceCharacter|.
+    </li>
+  </ul>
+  </del>
+  <emu-note>
+    <p>Valid JSON text is a subset of the ECMAScript |PrimaryExpression| syntax as modified by Step 4 above. Step 2 verifies that _JText_ conforms to that subset, and step 6 verifies that that parsing and evaluation returns a value of an appropriate type.</p>
+  </emu-note>
+</emu-clause>

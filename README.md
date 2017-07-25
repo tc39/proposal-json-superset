@@ -28,4 +28,4 @@ This change is backwards-compatible with all versions of ECMAScript.
 User-visible effects will be limited to the elimination of SyntaxError completions when parsing strings that include unescaped LINE SEPARATOR or PARAGRAPH SEPARATOR characters, which in practice are extremely uncommon.
 
 ## Specification
-To come.
+The specification is available in [ecmarkup](spec.emu).

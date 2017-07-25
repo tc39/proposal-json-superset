@@ -24,8 +24,15 @@ const PS = eval("'\u2029'");
 ```
 
 ## Discussion
+### Backwards Compatibility
 This change is backwards-compatible with all versions of ECMAScript.
 User-visible effects will be limited to the elimination of SyntaxError completions when parsing strings that include unescaped LINE SEPARATOR or PARAGRAPH SEPARATOR characters, which in practice are extremely uncommon.
+
+### Regular Expression Literals
+Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are not currently allowed in regular expression literals either, but that restriction has been left in place because regular expression literals are not part of JSON.
+
+### Template Literals
+Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are already allowed in template literals.
 
 ## Specification
 The specification is available in [ecmarkup](spec.emu) or [rendered HTML](https://gibson042.github.io/ecma262-proposal-json-superset/).

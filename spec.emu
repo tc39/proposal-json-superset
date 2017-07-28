@@ -5,7 +5,7 @@
 title: Subsume JSON
 status: proposal
 stage: 0
-shortname: ecma262-proposal-json-superset
+shortname: &lt;a href="https://github.com/gibson042/ecma262-proposal-json-superset"&gt;ecma262-proposal-json-superset&lt;/a&gt;
 contributors: Richard Gibson
 </pre>
 <emu-biblio href="./missing-productions.json"></emu-biblio>

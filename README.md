@@ -6,7 +6,7 @@ A proposal to extend ECMA-262 syntax into a superset of JSON.
 This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process-document/).
 
 ## Champions
-There are no current champions, but Mark Miller has expressed interest.
+Mark Miller
 
 ## Motivation
 ECMAScript claims JSON as a subset in [`JSON.parse`](https://tc39.github.io/ecma262/#sec-json.parse), but (as has been well-documented) that is not true because JSON strings can contain unescaped U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR characters while ECMAScript strings cannot.

@@ -25,7 +25,7 @@ const PS = eval("'\u2029'");
 
 ## Discussion
 ### Backwards Compatibility
-This change is backwards-compatible with all versions of ECMAScript.
+This change is backwards-compatible.
 User-visible effects will be limited to the elimination of SyntaxError completions when parsing strings that include unescaped LINE SEPARATOR or PARAGRAPH SEPARATOR characters, which in practice are extremely uncommon.
 
 ### Regular Expression Literals

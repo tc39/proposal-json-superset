@@ -34,5 +34,12 @@ Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are not currently al
 ### Template Literals
 Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are already allowed in template literals.
 
+### Objections
+Allen Wirfs-Brock [argues](https://esdiscuss.org/topic/json-text-is-not-a-subset-of-primaryexpression#content-3) that ECMAScript and JSON are distinct and don't need an easily-described relationship, and is concerned that acceptance of this proposal would be used as leverage by others attempting to "fix JSON".
+
+The latter is addressed by this proposal explicitly acknowledging JSON syntax as a fixed point.
+As for the former, it is clear from the definition of `JSON.parse` that ECMAScript benefits from the similarity (e.g., step 4 includes "parsing and evaluating <i>scriptText</i> as if it was the source text of an ECMAScript <i>Script</i>").
+This proposal argues that eliminating the need for an alternate <i>DoubleStringCharacter</i> production and the associated cognitive burden in reasoning about the two languages is sufficiently beneficial to justify such a change.
+
 ## Specification
 The specification is available in [ecmarkup](spec.emu) or [rendered HTML](https://gibson042.github.io/ecma262-proposal-json-superset/).

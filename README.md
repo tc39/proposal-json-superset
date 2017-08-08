@@ -34,6 +34,11 @@ Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are not currently al
 ### Template Literals
 Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are already allowed in template literals.
 
+### Validity
+Encompassing JSON syntax does not imply the _semantic_ validity of all JSON text.
+For example, `({ "__proto__": 1, "__proto__": 2 })` triggers an early SyntaxError under Annex B, and will continue to do so.
+But it will become possible to generate a parse tree from `{ "LineTerminators": "\n\r  " }`.
+
 ### Objections
 Allen Wirfs-Brock [argues](https://esdiscuss.org/topic/json-text-is-not-a-subset-of-primaryexpression#content-3) that ECMAScript and JSON are distinct and don't need an easily-described relationship, and is concerned that acceptance of this proposal would be used as leverage by others attempting to "fix JSON".
 

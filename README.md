@@ -15,7 +15,7 @@ These exceptions add unnecessary complexity to the specification and increase th
 Also, as a lesser but concrete corrolary problem, certain source concatenation and construction tasks currently require additional steps to process valid JSON into valid ECMAScript before embedding it.
 
 ## Proposed Solution
-JSON syntax is permanently fixed by [RFC 7159](https://tools.ietf.org/html/rfc7159), but the <i>DoubleStringCharacter</i> and <i>SingleStringCharacter</i> productions of ECMA-262 can be extended to allow unescaped U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR characters.
+JSON syntax is defined by [ECMA-404](http://www.ecma-international.org/publications/standards/Ecma-404.htm) and permanently fixed by [RFC 7159](https://tools.ietf.org/html/rfc7159), but the <i>DoubleStringCharacter</i> and <i>SingleStringCharacter</i> productions of ECMA-262 can be extended to allow unescaped U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR characters.
 
 ## Examples
 ```js

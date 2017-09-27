@@ -27,7 +27,7 @@ const PS = eval("'\u2029'");
 ## Discussion
 ### Backwards Compatibility
 This change is backwards-compatible.
-User-visible effects will be limited to the elimination of SyntaxError completions when parsing strings that include unescaped LINE SEPARATOR or PARAGRAPH SEPARATOR characters, which in practice are extremely uncommon.
+User-visible effects will be limited to the elimination of SyntaxError completions when parsing strings that include unescaped LINE SEPARATOR or PARAGRAPH SEPARATOR characters, which in practice are extremely uncommon (we also hope to [collect data](https://bugs.chromium.org/p/v8/issues/detail?id=6827) for the related question of how often those characters are used as line terminators _outside_ of strings).
 
 ### Regular Expression Literals
 Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are not currently allowed in regular expression literals either, but that restriction has been left in place because regular expression literals are not part of JSON.
@@ -38,7 +38,7 @@ Unescaped LINE SEPARATOR and PARAGRAPH SEPARATOR characters are already allowed 
 ### Validity
 Encompassing JSON syntax does not imply the _semantic_ validity of all JSON text.
 For example, `({ "__proto__": 1, "__proto__": 2 })` triggers an early SyntaxError under Annex B, and will continue to do so.
-But it will become possible to generate a parse tree from `{ "LineTerminators": "\n\r  " }`.
+However, it will become possible to generate a parse tree from `({ "LineTerminators": "\n\r  " })`.
 
 ### Objections
 Allen Wirfs-Brock [argues](https://esdiscuss.org/topic/json-text-is-not-a-subset-of-primaryexpression#content-3) that ECMAScript and JSON are distinct and don't need an easily-described relationship, and is concerned that acceptance of this proposal would be used as leverage by others attempting to "fix JSON".

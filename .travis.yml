@@ -4,14 +4,15 @@ node_js:
   - node
 script:
   - npm run build &&
-      [ "@$TRAVIS_BRANCH" = "@master" ] || exit 0 &&
+      { [ "@$TRAVIS_BRANCH" = "@master" ] || exit 0; } &&
       $(npm bin)/set-up-ssh
         --key "$encrypted_0f6502bbf2d6_key"
         --iv "$encrypted_0f6502bbf2d6_iv"
         --path-encrypted-key ".travis-github-deploy-key.enc" &&
+      git checkout "$TRAVIS_BRANCH" &&
       git add docs &&
-      git commit "$GIT_AUTHOR" --message "Generated content @ $TRAVIS_COMMIT [skip ci]" || exit 0 &&
-      git push "git@github.com:${TRAVIS_REPO_SLUG}.git" "$TRAVIS_BRANCH"
+      { git commit "$GIT_AUTHOR" -nm "Generated content @ $TRAVIS_COMMIT [skip ci]" || exit 0; } &&
+      git push "git@github.com:${TRAVIS_REPO_SLUG}.git" HEAD
 
 git:
   depth: 1

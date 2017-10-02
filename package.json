@@ -1,7 +1,8 @@
 {
     "private": true,
     "devDependencies": {
-        "ecmarkup": "^3.0.0"
+        "ecmarkup": "^3.0.0",
+        "@alrra/travis-scripts": "^3.0.1"
     },
     "scripts": {
         "test": "exit 0",

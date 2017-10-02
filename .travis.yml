@@ -1,0 +1,17 @@
+sudo: false
+language: node_js
+script:
+  - npm run build &&
+      [ "@$TRAVIS_BRANCH" = "@master" ] || exit 0 &&
+      $(npm bin)/set-up-ssh
+        --key "$encrypted_0f6502bbf2d6_key"
+        --iv "$encrypted_0f6502bbf2d6_iv"
+        --path-encrypted-key ".travis-github-deploy-key.enc" &&
+      git add docs &&
+      git commit "$GIT_AUTHOR" --message "Generated content @ $TRAVIS_COMMIT [skip ci]" || exit 0 &&
+      git push "git@github.com:${TRAVIS_REPO_SLUG}.git" "$TRAVIS_BRANCH"
+
+git:
+  depth: 1
+env:
+  - GIT_AUTHOR="--author='Travis CI <travis-ci.org@invalid>'"

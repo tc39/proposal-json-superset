@@ -1,20 +1,10 @@
 {
-    "name": "ecma262-proposal-json-superset",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/gibson042/ecma262-proposal-json-superset"
-    },
-    "keywords": [
-        "ecmascript",
-        "json",
-        "test262"
-    ],
-    "author": "Richard Gibson",
-    "license": "MIT",
+    "private": true,
     "devDependencies": {
         "ecmarkup": "^3.0.0"
     },
     "scripts": {
+        "test": "exit 0",
         "build": "ecmarkup spec.emu docs/index.html"
     }
 }

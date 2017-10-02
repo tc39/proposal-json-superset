@@ -48,4 +48,4 @@ As for the former, it is clear from the definition of `JSON.parse` that ECMAScri
 This proposal argues that eliminating the need for an alternate <i>DoubleStringCharacter</i> production and the associated cognitive burden in reasoning about the two languages is sufficiently beneficial to justify such a change.
 
 ## Specification
-The specification is available in [ecmarkup](spec.emu) or [rendered HTML](https://gibson042.github.io/ecma262-proposal-json-superset/).
+The specification is available in [ecmarkup](spec.emu) or [rendered HTML](https://tc39.github.io/proposal-json-superset/).

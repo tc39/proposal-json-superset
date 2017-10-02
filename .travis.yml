@@ -11,10 +11,12 @@ script:
         --path-encrypted-key ".travis-github-deploy-key.enc" &&
       git checkout "$TRAVIS_BRANCH" &&
       git add docs &&
-      { git commit "$GIT_AUTHOR" -nm "Generated content @ $TRAVIS_COMMIT [skip ci]" || exit 0; } &&
+      {
+        git diff --staged --stat &&
+        git commit --no-verify -m "Generated content @ $TRAVIS_COMMIT [skip ci]" ||
+        exit 0;
+      } &&
       git push "git@github.com:${TRAVIS_REPO_SLUG}.git" HEAD
 
 git:
   depth: 1
-env:
-  - GIT_AUTHOR="--author='Travis CI <travis-ci.org@invalid>'"

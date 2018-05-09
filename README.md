@@ -49,7 +49,7 @@ This proposal argues that eliminating the need for an alternate <i>DoubleStringC
 
 ## Conformance tests
 
-Test262 tests are here: <https://github.com/tc39/test262/pull/1543>
+Test262 tests are here: <https://github.com/tc39/test262/pull/1544>
 
 ## Implementations
 

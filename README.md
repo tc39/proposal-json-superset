@@ -47,6 +47,10 @@ The latter is addressed by this proposal explicitly acknowledging JSON syntax as
 As for the former, it is clear from the definition of `JSON.parse` that ECMAScript benefits from the similarity (e.g., step 4 includes "parsing and evaluating <i>scriptText</i> as if it was the source text of an ECMAScript <i>Script</i>").
 This proposal argues that eliminating the need for an alternate <i>DoubleStringCharacter</i> production and the associated cognitive burden in reasoning about the two languages is sufficiently beneficial to justify such a change.
 
+## Conformance tests
+
+Test262 tests are here: <https://github.com/tc39/test262/pull/1543>
+
 ## Implementations
 
 - [V8](https://bugs.chromium.org/p/v8/issues/detail?id=7418), shipping in Chrome 66

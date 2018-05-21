@@ -55,6 +55,7 @@ Test262 tests are here: <https://github.com/tc39/test262/pull/1544>
 
 - [V8](https://bugs.chromium.org/p/v8/issues/detail?id=7418), shipping in Chrome 66
 - JavaScriptCore, shipping in [Safari Technology Preview 49+](https://developer.apple.com/safari/technology-preview/release-notes/#release-49)
+- [Babel](https://github.com/babel/babel/tree/master/packages/babel-plugin-proposal-json-strings)
 
 ## Specification
 The specification is available in [ecmarkup](spec.emu) or [rendered HTML](https://tc39.github.io/proposal-json-superset/).

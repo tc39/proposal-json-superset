@@ -3,7 +3,7 @@
 A proposal to extend ECMA-262 syntax into a superset of JSON.
 
 ## Status
-This proposal is at stage 3 of [the TC39 Process](https://tc39.github.io/process-document/).
+This proposal is at stage 4 of [the TC39 Process](https://tc39.github.io/process-document/) and is scheduled to be included in ES2019.
 
 ## Champions
 * Mark Miller

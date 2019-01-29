@@ -51,6 +51,13 @@ This proposal argues that eliminating the need for an alternate <i>DoubleStringC
 
 Test262 tests are here: <https://github.com/tc39/test262/pull/1544>
 
+## TC39 meeting notes
+
+- [September 2017](https://tc39.github.io/tc39-notes/2017-09_sept-27.html#12ie-make-ecmascript-a-syntactic-superset-of-json-for-stage-1)
+- [November 2017](https://tc39.github.io/tc39-notes/2017-11_nov-28.html#9iic-make-ecmascript-a-syntactic-superset-of-json-for-stage-2)
+- [January 2018](https://tc39.github.io/tc39-notes/2018-01_jan-23.html#13iib-make-ecmascript-a-syntactic-superset-of-json-for-stage-3)
+- [May 2018](https://tc39.github.io/tc39-notes/2018-05_may-22.html#11ie-ecmascript-as-a-superset-of-json)
+
 ## Implementations
 
 - [V8](https://bugs.chromium.org/p/v8/issues/detail?id=7418), shipping in Chrome 66

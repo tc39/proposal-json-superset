@@ -1,4 +1,4 @@
-# Subsume JSON
+# Subsume JSON (a.k.a. JSON ⊂ ECMAScript)
 
 A proposal to extend ECMA-262 syntax into a superset of JSON.
 
